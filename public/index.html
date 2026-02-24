@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linkle — Share Articles Worth Reading</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo" onclick="navigate('feed')">Linkle</a>
+      <nav class="nav" id="nav-links">
+        <a href="#" onclick="navigate('feed')" class="nav-link active" data-page="feed">Explore</a>
+        <a href="#" onclick="navigate('following')" class="nav-link" data-page="following" id="nav-following" style="display:none">Following</a>
+      </nav>
+      <div class="header-actions">
+        <div id="auth-buttons">
+          <button class="btn btn-outline" onclick="showModal('login')">Log In</button>
+          <button class="btn btn-primary" onclick="showModal('register')">Sign Up</button>
+        </div>
+        <div id="user-menu" style="display:none">
+          <button class="btn btn-primary" onclick="showModal('newpost')">+ Share Link</button>
+          <button class="btn btn-ghost" id="user-menu-btn" onclick="toggleUserDropdown()"></button>
+          <div class="dropdown" id="user-dropdown">
+            <a href="#" onclick="viewMyProfile()">My Profile</a>
+            <a href="#" onclick="logout()">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+    <!-- Feed view (default) -->
+    <div id="page-feed" class="page active">
+      <div class="feed" id="feed-container"></div>
+      <div class="load-more" id="load-more-container">
+        <button class="btn btn-outline" id="load-more-btn" onclick="loadMorePosts()">Load More</button>
+      </div>
+      <div class="empty-state" id="feed-empty" style="display:none">
+        <h2>No articles shared yet</h2>
+        <p>Be the first to share an interesting article!</p>
+      </div>
+    </div>
+
+    <!-- Following feed -->
+    <div id="page-following" class="page">
+      <div class="feed" id="following-container"></div>
+      <div class="empty-state" id="following-empty" style="display:none">
+        <h2>Nothing here yet</h2>
+        <p>Follow people to see their shared articles here.</p>
+      </div>
+    </div>
+
+    <!-- Profile view -->
+    <div id="page-profile" class="page">
+      <div class="profile-header" id="profile-header"></div>
+      <div class="feed" id="profile-posts"></div>
+    </div>
+
+    <!-- Single post view -->
+    <div id="page-post" class="page">
+      <div id="post-detail"></div>
+      <div class="comments-section" id="comments-section"></div>
+    </div>
+  </main>
+
+  <!-- Modals -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+
+      <!-- Login Form -->
+      <div class="modal-content" id="modal-login" style="display:none">
+        <h2>Welcome back</h2>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Username or Email</label>
+            <input type="text" id="login-username" required placeholder="Enter username or email">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" required placeholder="Enter password">
+          </div>
+          <div class="form-error" id="login-error"></div>
+          <button type="submit" class="btn btn-primary btn-full">Log In</button>
+        </form>
+        <p class="modal-switch">Don't have an account? <a href="#" onclick="showModal('register')">Sign up</a></p>
+      </div>
+
+      <!-- Register Form -->
+      <div class="modal-content" id="modal-register" style="display:none">
+        <h2>Join Linkle</h2>
+        <form onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="register-username" required placeholder="Choose a username" minlength="3" maxlength="30">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="register-email" required placeholder="Your email address">
+          </div>
+          <div class="form-group">
+            <label>Display Name</label>
+            <input type="text" id="register-displayname" placeholder="How others will see you">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="register-password" required placeholder="At least 6 characters" minlength="6">
+          </div>
+          <div class="form-error" id="register-error"></div>
+          <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+        </form>
+        <p class="modal-switch">Already have an account? <a href="#" onclick="showModal('login')">Log in</a></p>
+      </div>
+
+      <!-- New Post Form -->
+      <div class="modal-content" id="modal-newpost" style="display:none">
+        <h2>Share an Article</h2>
+        <form onsubmit="handleNewPost(event)">
+          <div class="form-group">
+            <label>Article URL</label>
+            <input type="url" id="post-url" required placeholder="https://example.com/article">
+          </div>
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="post-title" placeholder="Article title">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="post-description" placeholder="Brief description of the article" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Your Thoughts (optional)</label>
+            <textarea id="post-comment" placeholder="Why are you sharing this?" rows="3"></textarea>
+          </div>
+          <div class="form-error" id="post-error"></div>
+          <button type="submit" class="btn btn-primary btn-full">Share</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
