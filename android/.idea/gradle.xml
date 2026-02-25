@@ -4,7 +4,7 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="gradleJvm" value="\\wsl.localhost\Ubuntu\usr\lib\jvm\java-21-openjdk-amd64" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
